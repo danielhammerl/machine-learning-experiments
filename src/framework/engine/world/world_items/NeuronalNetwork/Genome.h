@@ -1,0 +1,14 @@
+//
+// Created by Daniel Hammerl on 07.05.23.
+//
+
+#ifndef MACHINELEARNINGEXPERIMENTS_GENOME_H
+#define MACHINELEARNINGEXPERIMENTS_GENOME_H
+
+
+class Genome {
+
+};
+
+
+#endif //MACHINELEARNINGEXPERIMENTS_GENOME_H

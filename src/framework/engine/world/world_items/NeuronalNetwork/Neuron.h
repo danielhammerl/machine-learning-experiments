@@ -1,0 +1,14 @@
+//
+// Created by Daniel Hammerl on 07.05.23.
+//
+
+#ifndef MACHINELEARNINGEXPERIMENTS_NEURON_H
+#define MACHINELEARNINGEXPERIMENTS_NEURON_H
+
+
+class Neuron {
+
+};
+
+
+#endif //MACHINELEARNINGEXPERIMENTS_NEURON_H
