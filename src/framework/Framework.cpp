@@ -45,6 +45,7 @@ void Framework::startGeneration() {
 
 void Framework::endGeneration() {
     std::cout << "end generation " << currentGeneration << std::endl;
+    experiment->endGeneration();
     world->depopulate();
 }
 

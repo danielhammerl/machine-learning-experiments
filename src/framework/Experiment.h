@@ -12,6 +12,7 @@
 class Experiment {
 public:
     Experiment();
+    void endGeneration();
 
     unsigned int maxNumberOfBeings = 4000;
     unsigned int numberOfRoundsPerGeneration = 1000;

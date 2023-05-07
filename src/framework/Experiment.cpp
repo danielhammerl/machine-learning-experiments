@@ -6,3 +6,7 @@
 Experiment::Experiment() {
 
 }
+
+void Experiment::endGeneration() {
+
+}
