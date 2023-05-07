@@ -15,10 +15,10 @@ World::~World() {
 }
 
 void World::mapOverItems(const std::function<void(WorldItem *)> &fun) {
-    for (unsigned int x = 0; x < WORLD_SIZE; x++) {
-        for (unsigned int y = 0; y < WORLD_SIZE; y++) {
-            if (items[x][y] != nullptr) {
-                fun(items[x][y]);
+    for (auto &x: items) {
+        for (auto &item: x) {
+            if (item != nullptr) {
+                fun(item);
             }
         }
     }
@@ -45,7 +45,7 @@ void World::populateRandomly(unsigned int population) {
             sf::Vector2u randomPos = sf::Vector2u(getRandomUnsignedInt(0, WORLD_SIZE),
                                                   getRandomUnsignedInt(0, WORLD_SIZE));
             if (isItemAtPos(randomPos)) {
-                return;
+                break;
             }
             addItem(new WorldItem(), randomPos);
             success = true;
