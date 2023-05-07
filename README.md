@@ -1,0 +1,1 @@
+ffmpeg -start_number n -i image%d.jpg -vcodec mpeg4 test.avi
