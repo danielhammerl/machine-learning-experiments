@@ -14,18 +14,23 @@
 class World {
 public:
     World();
+
     ~World();
 
-    void mapOverItems(const std::function<void(WorldItem*)> &fun);
-    void addItem(WorldItem* _item, sf::Vector2u pos);
-    const WorldItem* getItem(sf::Vector2u pos);
+    void mapOverItems(const std::function<void(WorldItem *)> &fun);
+
+    void addItem(WorldItem *_item, sf::Vector2u pos);
+
+    const WorldItem *getItem(sf::Vector2u pos);
+
     bool isItemAtPos(sf::Vector2u pos);
 
     void populateRandomly(unsigned int population);
+
     void depopulate();
 
 private:
-    WorldItem* items[WORLD_SIZE][WORLD_SIZE];
+    WorldItem *items[WORLD_SIZE][WORLD_SIZE];
 };
 
 
