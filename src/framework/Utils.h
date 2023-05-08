@@ -1,5 +1,10 @@
 #include <random>
 #include <filesystem>
+#include <cmath>
+
+static long double sigmoidFunction(long double x) {
+    return 1.L / (1.L + std::exp(-1 * x));
+}
 
 static unsigned int getRandomUnsignedInt(unsigned int min, unsigned int max) {
     std::random_device dev;
