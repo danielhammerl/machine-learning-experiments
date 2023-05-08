@@ -2,8 +2,12 @@
 #include <filesystem>
 #include <cmath>
 
-static long double sigmoidFunction(long double x) {
-    return 1.L / (1.L + std::exp(-1 * x));
+static double sigmoidFunction(double x) {
+    return 1.f / (1.f + std::exp(-x));
+}
+
+static double sigmoidDerivativeFunction(double x) {
+    return x * (1 - x);
 }
 
 static unsigned int getRandomUnsignedInt(unsigned int min, unsigned int max) {
@@ -12,6 +16,18 @@ static unsigned int getRandomUnsignedInt(unsigned int min, unsigned int max) {
     std::uniform_int_distribution<std::mt19937::result_type> dist(min, max);
 
     return dist(rng);
+}
+
+static double getRandomDouble(double min, double max) {
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_real_distribution<> dist(min, max);
+
+    return dist(rng);
+}
+
+static double randomBetweenZeroAndOne() {
+    return getRandomDouble(0, 1);
 }
 
 static void createDirectoryIfDoesntExist(const char *dirName) {
