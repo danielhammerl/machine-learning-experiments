@@ -19,12 +19,10 @@ int main(int argc, char *argv[]) {
     const unsigned numberOfHiddenLayers = 2;
     const unsigned numberOfOutputLayers = 1;
 
-    const double learningFactor = 0.1;
+    const double learningFactor = 0.5;
     double hiddenLayers[numberOfHiddenLayers];
     double outputLayers[numberOfOutputLayers];
 
-    //double hiddenLayerBias[numberOfHiddenLayers] = {randomBetweenZeroAndOne(), randomBetweenZeroAndOne()};
-    //double outputLayerBias[numberOfOutputLayers] = {randomBetweenZeroAndOne()};
     double inputToHiddenWeights[numberOfInputLayers][numberOfHiddenLayers] = {
             {randomBetweenZeroAndOne(), randomBetweenZeroAndOne(),},
             {randomBetweenZeroAndOne(), randomBetweenZeroAndOne()}};
