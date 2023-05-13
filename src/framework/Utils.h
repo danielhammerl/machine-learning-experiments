@@ -18,7 +18,7 @@ static double reluFunction(double x) {
 }
 
 static double reluDerivativeFunction(double x) {
-    return x > 0 ? 1 : 0;
+    return x >= 0 ? 1 : 0;
 }
 
 static unsigned int getRandomUnsignedInt(unsigned int min, unsigned int max) {
