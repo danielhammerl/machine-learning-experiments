@@ -13,6 +13,14 @@ static double sigmoidDerivativeFunction(double x) {
     return x * (1 - x);
 }
 
+static double reluFunction(double x) {
+    return x > 0 ? x : 0;
+}
+
+static double reluDerivativeFunction(double x) {
+    return x > 0 ? 1 : 0;
+}
+
 static unsigned int getRandomUnsignedInt(unsigned int min, unsigned int max) {
     std::random_device dev;
     std::mt19937 rng(dev());
