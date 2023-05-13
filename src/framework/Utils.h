@@ -1,3 +1,6 @@
+#ifndef UTILS_H
+#define UTILS_H
+
 #include <random>
 #include <filesystem>
 #include <cmath>
@@ -36,3 +39,5 @@ static void createDirectoryIfDoesntExist(const char *dirName) {
         std::filesystem::create_directory(dirName);
     }
 }
+
+#endif
