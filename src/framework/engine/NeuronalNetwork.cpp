@@ -7,20 +7,26 @@
 #include <iostream>
 
 NeuronalNetwork::NeuronalNetwork(unsigned _numberOfInputNeurons, std::vector<unsigned> _hiddenLayers,
-                                 unsigned _numberOfOutputNeurons)
-        : numberOfInputNeurons(_numberOfInputNeurons),
-          hiddenLayers(_hiddenLayers),
-          numberOfOutputNeurons(_numberOfOutputNeurons) {
+                                 unsigned _numberOfOutputNeurons) {
 
     if (hiddenLayers.empty()) {
         throw std::invalid_argument("NeuronalNetwork does not support zero hidden layers!");
     }
 
-    for (unsigned inputNeuronIndex = 0; inputNeuronIndex < numberOfInputNeurons; inputNeuronIndex++) {
+    inputNeurons.resize(_numberOfInputNeurons, 0);
+    outputNeurons.resize(_numberOfOutputNeurons, 0);
+
+    for (unsigned int numberOfNodesInLayer: _hiddenLayers) {
         std::vector<double> temp;
-        temp.reserve(hiddenLayers[0]);
+        temp.resize(numberOfNodesInLayer, 0);
+        hiddenLayers.push_back(temp);
+    }
+
+    for (unsigned inputNeuronIndex = 0; inputNeuronIndex < inputNeurons.size(); inputNeuronIndex++) {
+        std::vector<double> temp;
+        temp.reserve(hiddenLayers[0].size());
         for (unsigned hiddenNeuronInFirstLayerIndex = 0;
-             hiddenNeuronInFirstLayerIndex < hiddenLayers[0]; hiddenNeuronInFirstLayerIndex++) {
+             hiddenNeuronInFirstLayerIndex < hiddenLayers[0].size(); hiddenNeuronInFirstLayerIndex++) {
             temp.push_back(0);
         }
         weightBetweenInputNeuronsAndHiddenLayer.push_back(temp);
@@ -29,24 +35,19 @@ NeuronalNetwork::NeuronalNetwork(unsigned _numberOfInputNeurons, std::vector<uns
     // -1 because we dont want the connection between last layer and output layer here
     for (unsigned hiddenLayerIndex = 0; hiddenLayerIndex < hiddenLayers.size() - 1; hiddenLayerIndex++) {
         std::vector<std::vector<double>> temp;
-        for (unsigned hiddenNeuronIndex = 0; hiddenNeuronIndex < hiddenLayers[hiddenLayerIndex]; hiddenNeuronIndex++) {
+        for (unsigned hiddenNeuronIndex = 0;
+             hiddenNeuronIndex < hiddenLayers[hiddenLayerIndex].size(); hiddenNeuronIndex++) {
             std::vector<double> temp2;
-            temp2.reserve(hiddenLayers[hiddenLayerIndex + 1]);
-            for (unsigned nextHiddenNeuronIndex = 0;
-                 nextHiddenNeuronIndex < hiddenLayers[hiddenLayerIndex + 1]; nextHiddenNeuronIndex++) {
-                temp2.push_back(0);
-            }
+            temp2.resize(hiddenLayers[hiddenLayerIndex + 1].size(), 0);
             temp.push_back(temp2);
         }
         weightBetweenHiddenLayers.push_back(temp);
     }
 
     for (unsigned hiddenNeuronLastLayerIndex = 0;
-         hiddenNeuronLastLayerIndex < hiddenLayers.back(); hiddenNeuronLastLayerIndex++) {
+         hiddenNeuronLastLayerIndex < hiddenLayers.back().size(); hiddenNeuronLastLayerIndex++) {
         std::vector<double> temp;
-        for (unsigned outputNeuronIndex = 0; outputNeuronIndex < numberOfOutputNeurons; outputNeuronIndex++) {
-            temp.push_back(0);
-        }
+        temp.resize(outputNeurons.size(), 0);
         weightBetweenHiddenLayerAndOutputNeurons.push_back(temp);
     }
 
@@ -123,6 +124,41 @@ void NeuronalNetwork::setWeightHiddenToOutput(unsigned int indexOfHiddenNeuron, 
 }
 
 std::vector<double> NeuronalNetwork::feedForward(std::vector<double> input) {
-    // TO IMPLEMENT
+    if (input.size() != inputNeurons.size()) {
+        throw std::invalid_argument(
+                "NeuronalNetwork::feedForward -> number of inputs should have length of number of input neurons");
+    }
+    for (unsigned hiddenNeuronIndexInFirstLayer = 0;
+         hiddenNeuronIndexInFirstLayer < hiddenLayers[0].size(); hiddenNeuronIndexInFirstLayer++) {
+        double activation = 0;
+
+        for (int inputIndex = 0; inputIndex < inputNeurons.size(); inputIndex++) {
+            activation +=
+                    input[inputIndex] *
+                    weightBetweenInputNeuronsAndHiddenLayer[inputIndex][hiddenNeuronIndexInFirstLayer];
+        }
+
+        hiddenLayers[0][hiddenNeuronIndexInFirstLayer] = ACTIVATION_FUNCTION(activation);
+    }
+
+    for (unsigned hiddenLayerIndex = 1; hiddenLayerIndex < hiddenLayers.size(); hiddenLayerIndex++) {
+        for (unsigned hiddenNeuronIndex = 0;
+             hiddenNeuronIndex < hiddenLayers[hiddenLayerIndex].size(); hiddenNeuronIndex++) {
+
+            double activation = 0;
+
+            for (unsigned hiddenNeuronIndexInLayerBefore = 0; hiddenNeuronIndexInLayerBefore <
+                                                              hiddenLayers[hiddenLayerIndex -
+                                                                           1].size(); hiddenNeuronIndexInLayerBefore++) {
+                activation += hiddenLayers[hiddenLayerIndex - 1][hiddenNeuronIndexInLayerBefore] *
+                              weightBetweenHiddenLayers[hiddenLayerIndex -
+                                                        1][hiddenNeuronIndexInLayerBefore][hiddenNeuronIndex];
+            }
+
+            hiddenLayers[hiddenLayerIndex][hiddenNeuronIndex] = ACTIVATION_FUNCTION(activation);
+        }
+    }
+
+    // TODO implement output activation
 }
 

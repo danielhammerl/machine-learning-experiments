@@ -21,8 +21,9 @@ public:
     void setWeightInputToHidden(unsigned indexOfInputNeuron, unsigned indexOfHiddenNeuron,
                                 double weight);
 
-    void setWeightHiddenToHidden(unsigned indexOfLeftHiddenLayer, unsigned indexOfLeftNeuron, unsigned indexOfRightNeuron,
-                                 double weight);
+    void
+    setWeightHiddenToHidden(unsigned indexOfLeftHiddenLayer, unsigned indexOfLeftNeuron, unsigned indexOfRightNeuron,
+                            double weight);
 
     void setWeightHiddenToOutput(unsigned indexOfHiddenNeuron, unsigned indexOfOutputNeuron,
                                  double weight);
@@ -36,13 +37,13 @@ private:
     const std::function<double(double)> ACTIVATION_FUNCTION = sigmoidFunction;
     const std::function<double(double)> ACTIVATION_FUNCTION_DERIVATIVE = sigmoidDerivativeFunction;
 
-    unsigned numberOfInputNeurons;
-    unsigned numberOfOutputNeurons;
-    std::vector<unsigned> hiddenLayers;
+    std::vector<double> inputNeurons;
+    std::vector<double> outputNeurons;
+    std::vector<std::vector<double>> hiddenLayers;
 
-    std::vector<std::vector<double>> weightBetweenInputNeuronsAndHiddenLayer;
-    std::vector<std::vector<std::vector<double>>> weightBetweenHiddenLayers;
-    std::vector<std::vector<double>> weightBetweenHiddenLayerAndOutputNeurons;
+    std::vector<std::vector<double>> weightBetweenInputNeuronsAndHiddenLayer; // [inputIndex][hiddenInFirstLayerIndex]
+    std::vector<std::vector<std::vector<double>>> weightBetweenHiddenLayers; // [indexOfLeftHiddenLayer][indexOfLeftNode][indexOfRightNode]
+    std::vector<std::vector<double>> weightBetweenHiddenLayerAndOutputNeurons; // [hiddenInLastLayerIndex][outputIndex]
 };
 
 
