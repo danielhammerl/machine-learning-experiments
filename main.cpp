@@ -6,13 +6,9 @@
 
 int main(int argc, char *argv[]) {
 
-    /* Test experiment;
+    Test experiment;
 
-     auto *framework = new Framework(&experiment, argc, argv);
+    auto *framework = new Framework(&experiment, argc, argv);
 
-     framework->run();*/
-
-    NeuronalNetwork nn = NeuronalNetwork(2, {2}, 1);
-    //nn.generateRandomWeights();
-    nn.printWeights();
+    framework->run();
 }
