@@ -9,7 +9,7 @@
 NeuronalNetwork::NeuronalNetwork(unsigned _numberOfInputNeurons, std::vector<unsigned> _hiddenLayers,
                                  unsigned _numberOfOutputNeurons) {
 
-    if (hiddenLayers.empty()) {
+    if (_hiddenLayers.empty()) {
         throw std::invalid_argument("NeuronalNetwork does not support zero hidden layers!");
     }
 
