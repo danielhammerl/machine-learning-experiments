@@ -138,7 +138,7 @@ std::vector<double> NeuronalNetwork::feedForward(std::vector<double> input) {
                     weightBetweenInputNeuronsAndHiddenLayer[inputIndex][hiddenNeuronIndexInFirstLayer];
         }
 
-        hiddenLayers[0][hiddenNeuronIndexInFirstLayer] = ACTIVATION_FUNCTION(activation);
+        hiddenLayers[0][hiddenNeuronIndexInFirstLayer] = ACTIVATION_FUNCTION(activation - GLOBAL_BIAS);
     }
 
     for (unsigned hiddenLayerIndex = 1; hiddenLayerIndex < hiddenLayers.size(); hiddenLayerIndex++) {
@@ -155,10 +155,21 @@ std::vector<double> NeuronalNetwork::feedForward(std::vector<double> input) {
                                                         1][hiddenNeuronIndexInLayerBefore][hiddenNeuronIndex];
             }
 
-            hiddenLayers[hiddenLayerIndex][hiddenNeuronIndex] = ACTIVATION_FUNCTION(activation);
+            hiddenLayers[hiddenLayerIndex][hiddenNeuronIndex] = ACTIVATION_FUNCTION(activation - GLOBAL_BIAS);
         }
     }
+    for (unsigned outputNeuronIndex = 0; outputNeuronIndex < outputNeurons.size(); outputNeuronIndex++) {
+        double activation = 0;
+        for (unsigned hiddenNeuronLastLayerIndex = 0;
+             hiddenNeuronLastLayerIndex < hiddenLayers[0].size(); hiddenNeuronLastLayerIndex++) {
 
-    // TODO implement output activation
+            activation += hiddenLayers.back()[hiddenNeuronLastLayerIndex] *
+                          weightBetweenHiddenLayerAndOutputNeurons[hiddenNeuronLastLayerIndex][outputNeuronIndex];
+        }
+
+        outputNeurons[outputNeuronIndex] = ACTIVATION_FUNCTION(activation - GLOBAL_BIAS);
+    }
+
+    return outputNeurons;
 }
 
