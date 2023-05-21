@@ -29,6 +29,10 @@ public:
 
     void depopulate();
 
+    void round();
+
+    void moveItem(WorldItem *item, MOVE_DIRECTION direction);
+
 private:
     WorldItem *items[WORLD_SIZE][WORLD_SIZE];
 };

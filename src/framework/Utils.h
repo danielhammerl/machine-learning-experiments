@@ -48,4 +48,15 @@ static void createDirectoryIfDoesntExist(const char *dirName) {
     }
 }
 
+enum MOVE_DIRECTION {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    UP_LEFT,
+    UP_RIGHT,
+    DOWN_LEFT,
+    DOWN_RIGHT,
+};
+
 #endif

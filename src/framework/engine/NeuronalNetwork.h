@@ -33,6 +33,8 @@ public:
 private:
     const double GLOBAL_BIAS = 0.1;
     //const double LEARNING_RATE = 0.1;
+    const double RANDOM_WEIGHT_MIN = -15;
+    const double RANDOM_WEIGHT_MAX = 15;
 
     const std::function<double(double)> ACTIVATION_FUNCTION = sigmoidFunction;
     const std::function<double(double)> ACTIVATION_FUNCTION_DERIVATIVE = sigmoidDerivativeFunction;

@@ -50,18 +50,20 @@ void Framework::endGeneration() {
 }
 
 void Framework::round() {
-
+    world->round();
 }
 
 void Framework::render() {
     sf::RenderTexture renderTexture;
-    renderTexture.create(WORLD_SIZE, WORLD_SIZE);
+    float desiredTextureSize = 1024;
+    float scaleFactor = desiredTextureSize / WORLD_SIZE;
+    renderTexture.create(desiredTextureSize, desiredTextureSize);
     renderTexture.clear(sf::Color::White);
 
     world->mapOverItems([&](WorldItem *item) {
         sf::RectangleShape shape;
-        shape.setSize(sf::Vector2f(1, 1));
-        shape.setPosition((sf::Vector2f) item->getPosition());
+        shape.setSize(sf::Vector2f(1 * scaleFactor, 1 * scaleFactor));
+        shape.setPosition(sf::Vector2f(item->getPosition().x * scaleFactor, item->getPosition().y * scaleFactor));
         shape.setFillColor(item->getColor());
         renderTexture.draw(shape);
     });

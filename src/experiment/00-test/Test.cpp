@@ -6,7 +6,7 @@
 
 Test::Test() {
     this->maxNumberOfBeings = 1000;
-    this->numberOfRoundsPerGeneration = 10;
+    this->numberOfRoundsPerGeneration = 200;
     this->maxNumberOfGenerations = 10;
     this->generationsToRender = {1, 10};
 }

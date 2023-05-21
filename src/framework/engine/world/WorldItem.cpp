@@ -5,24 +5,14 @@
 #include "WorldItem.h"
 
 WorldItem::WorldItem() {
+    brain = new NeuronalNetwork(1, {1}, 4);
+    brain->generateRandomWeights();
 }
 
 WorldItem::~WorldItem() {
+    delete brain;
+    brain = nullptr;
 }
-
-/*
-void WorldItem::move(int x, int y) {
-    sf::Vector2f newPos = sf::Vector2f(shape->getPosition().x + (float) x * WORLD_ITEM_SIZE,
-                                       shape->getPosition().y + (float) y * WORLD_ITEM_SIZE);
-
-    std::cout << newPos.x << "-" << newPos.y << std::endl;
-
-    newPos.x = newPos.x < 0 ? 0 : newPos.x;
-    newPos.y = newPos.y < 0 ? 0 : newPos.y;
-    newPos.x = newPos.x > WORLD_SIZE - WORLD_ITEM_SIZE ? WORLD_SIZE - WORLD_ITEM_SIZE : newPos.x;
-    newPos.y = newPos.y > WORLD_SIZE - WORLD_ITEM_SIZE ? WORLD_SIZE - WORLD_ITEM_SIZE : newPos.y;
-    shape->setPosition(newPos);
-}*/
 
 void WorldItem::setPosition(sf::Vector2u pos) {
     this->position.x = pos.x;
@@ -35,4 +25,66 @@ sf::Color WorldItem::getColor() {
 
 sf::Vector2u WorldItem::getPosition() {
     return this->position;
+}
+
+void WorldItem::move(MOVE_DIRECTION direction) {
+    WorldItemAction action;
+
+    switch (direction) {
+        case MOVE_DIRECTION::DOWN:
+            action = MOVE_DOWN;
+            break;
+        case MOVE_DIRECTION::UP:
+            action = MOVE_UP;
+            break;
+        case MOVE_DIRECTION::LEFT:
+            action = MOVE_LEFT;
+            break;
+        case MOVE_DIRECTION::RIGHT:
+            action = MOVE_RIGHT;
+            break;
+        case MOVE_DIRECTION::UP_LEFT:
+            action = MOVE_LEFT_UP;
+            break;
+        case MOVE_DIRECTION::UP_RIGHT:
+            action = MOVE_RIGHT_UP;
+            break;
+        case MOVE_DIRECTION::DOWN_LEFT:
+            action = MOVE_LEFT_DOWN;
+            break;
+        case MOVE_DIRECTION::DOWN_RIGHT:
+            action = MOVE_RIGHT_DOWN;
+            break;
+    }
+
+    setNextAction(action);
+}
+
+void WorldItem::round() {
+    auto result = brain->feedForward({getRandomDouble(-5, 5)});
+    double biggestValue = result[0];
+    int indexWithBiggestValue = 0;
+    for (auto x = 0; x < result.size(); x++) {
+        if (result[x] > biggestValue) {
+            biggestValue = result[x];
+            indexWithBiggestValue = x;
+        }
+    }
+
+    switch (indexWithBiggestValue) {
+        case 0:
+            this->move(MOVE_DIRECTION::DOWN);
+            break;
+        case 1:
+            this->move(MOVE_DIRECTION::UP);
+            break;
+        case 2:
+            this->move(MOVE_DIRECTION::LEFT);
+            break;
+        case 3:
+            this->move(MOVE_DIRECTION::RIGHT);
+            break;
+        default:
+            break;
+    }
 }

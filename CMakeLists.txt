@@ -36,7 +36,7 @@ ELSE()
 
 ENDIF()
 
-add_executable(MachineLearningExperiments main.cpp src/framework/Framework.h src/framework/Framework.cpp src/framework/engine/world/World.h src/framework/engine/world/World.cpp src/framework/engine/world/WorldItem.cpp src/framework/engine/world/WorldItem.h src/framework/engine/constants.h src/experiment/00-test/Test.cpp src/experiment/00-test/Test.h src/framework/Experiment.h src/framework/Experiment.cpp src/framework/engine/world/world_items/Being.cpp src/framework/engine/world/world_items/Being.h src/framework/Utils.h src/framework/engine/NeuronalNetwork.cpp src/framework/engine/NeuronalNetwork.h)
+add_executable(MachineLearningExperiments main.cpp src/framework/Framework.h src/framework/Framework.cpp src/framework/engine/world/World.h src/framework/engine/world/World.cpp src/framework/engine/world/WorldItem.cpp src/framework/engine/world/WorldItem.h src/framework/engine/constants.h src/experiment/00-test/Test.cpp src/experiment/00-test/Test.h src/framework/Experiment.h src/framework/Experiment.cpp src/framework/Utils.h src/framework/engine/NeuronalNetwork.cpp src/framework/engine/NeuronalNetwork.h)
 
 IF (WIN32)
     target_include_directories(MachineLearningExperiments PUBLIC $ENV{BOOST_ROOT})

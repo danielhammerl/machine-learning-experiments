@@ -56,21 +56,21 @@ NeuronalNetwork::NeuronalNetwork(unsigned _numberOfInputNeurons, std::vector<uns
 void NeuronalNetwork::generateRandomWeights() {
     for (auto &inputNeuron: weightBetweenInputNeuronsAndHiddenLayer) {
         for (auto &connection: inputNeuron) {
-            connection = randomBetweenZeroAndOne();
+            connection = getRandomDouble(RANDOM_WEIGHT_MIN, RANDOM_WEIGHT_MAX);
         }
     }
 
     for (auto &hiddenLayer: weightBetweenHiddenLayers) {
         for (auto &hiddenNode: hiddenLayer) {
             for (auto &connection: hiddenNode) {
-                connection = randomBetweenZeroAndOne();
+                connection = getRandomDouble(RANDOM_WEIGHT_MIN, RANDOM_WEIGHT_MAX);
             }
         }
     }
 
     for (auto &outputNeuron: weightBetweenHiddenLayerAndOutputNeurons) {
         for (auto &connection: outputNeuron) {
-            connection = randomBetweenZeroAndOne();
+            connection = getRandomDouble(RANDOM_WEIGHT_MIN, RANDOM_WEIGHT_MAX);
         }
     }
 }
