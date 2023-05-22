@@ -46,8 +46,8 @@ public:
     [[nodiscard]] std::vector<std::vector<WEIGHT_VALUE>> getWeightBetweenHiddenLayerAndOutputNeurons() const;
 
     static constexpr double GLOBAL_BIAS = 0.1;
-    static constexpr double MIN_WEIGHT = -4;
-    static constexpr double MAX_WEIGHT = 4;
+    static constexpr double MIN_WEIGHT = -15;
+    static constexpr double MAX_WEIGHT = 15;
 private:
 
     const std::function<NEURON_VALUE(NEURON_VALUE)> ACTIVATION_FUNCTION = sigmoidFunction;
