@@ -10,7 +10,6 @@
 #include "../../Utils.h"
 #include "../NeuronalNetwork.h"
 
-
 class WorldItem {
 public:
     WorldItem();
@@ -25,8 +24,12 @@ public:
 
     sf::Color getColor();
 
-    enum WorldItemAction {
-        NONE,
+    enum class WorldItemSensor {
+        RANDOM,
+        NOOP_MAX_VALUE,
+    };
+
+    enum class WorldItemAction {
         MOVE_LEFT,
         MOVE_RIGHT,
         MOVE_UP,
@@ -35,6 +38,7 @@ public:
         MOVE_RIGHT_UP,
         MOVE_LEFT_DOWN,
         MOVE_RIGHT_DOWN,
+        NOOP_MAX_VALUE,
     };
 
     void setNextAction(WorldItemAction action) {
@@ -45,14 +49,16 @@ public:
         return this->nextAction;
     }
 
+    std::vector<double> getSensorData();
+
 protected:
     void move(MOVE_DIRECTION direction);
 
 private:
-    WorldItemAction nextAction = WorldItemAction::NONE;
+    WorldItemAction nextAction = WorldItemAction::NOOP_MAX_VALUE;
     sf::Vector2u position;
 
-    NeuronalNetwork* brain;
+    NeuronalNetwork *brain;
 };
 
 

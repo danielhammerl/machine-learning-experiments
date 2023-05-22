@@ -20,7 +20,7 @@ void World::round() {
     mapOverItems([&, this](WorldItem *item) {
         auto action = item->getNextAction();
         switch (action) {
-            case WorldItem::WorldItemAction::NONE:
+            case WorldItem::WorldItemAction::NOOP_MAX_VALUE:
                 break;
             case WorldItem::WorldItemAction::MOVE_RIGHT_DOWN: {
                 moveItem(item, MOVE_DIRECTION::DOWN_RIGHT);
@@ -55,7 +55,7 @@ void World::round() {
                 break;
             }
         }
-        item->setNextAction(WorldItem::WorldItemAction::NONE);
+        item->setNextAction(WorldItem::WorldItemAction::NOOP_MAX_VALUE);
     });
 }
 

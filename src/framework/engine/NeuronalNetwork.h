@@ -11,6 +11,9 @@
 
 class NeuronalNetwork {
 public:
+    using NEURON_VALUE = double;
+    using WEIGHT_VALUE = double;
+
     NeuronalNetwork(unsigned _numberOfInputNeurons, std::vector<unsigned> _hiddenLayers,
                     unsigned _numberOfOutputNeurons);
 
@@ -19,33 +22,44 @@ public:
     void printWeights();
 
     void setWeightInputToHidden(unsigned indexOfInputNeuron, unsigned indexOfHiddenNeuron,
-                                double weight);
+                                WEIGHT_VALUE weight);
 
     void
     setWeightHiddenToHidden(unsigned indexOfLeftHiddenLayer, unsigned indexOfLeftNeuron, unsigned indexOfRightNeuron,
-                            double weight);
+                            WEIGHT_VALUE weight);
 
     void setWeightHiddenToOutput(unsigned indexOfHiddenNeuron, unsigned indexOfOutputNeuron,
-                                 double weight);
+                                 WEIGHT_VALUE weight);
 
-    std::vector<double> feedForward(std::vector<double> input);
+    std::vector<NEURON_VALUE> feedForward(std::vector<NEURON_VALUE> input);
 
+    [[nodiscard]] unsigned getNumberOfInputNeurons() const;
+
+    [[nodiscard]] unsigned getNumberOfOutputNeurons() const;
+
+    [[nodiscard]] std::vector<unsigned> getNumberOfHiddenNeurons() const;
+
+    [[nodiscard]] std::vector<std::vector<WEIGHT_VALUE>> getWeightBetweenInputNeuronsAndHiddenLayer() const;
+
+    [[nodiscard]] std::vector<std::vector<std::vector<WEIGHT_VALUE>>> getWeightBetweenHiddenLayers() const;
+
+    [[nodiscard]] std::vector<std::vector<WEIGHT_VALUE>> getWeightBetweenHiddenLayerAndOutputNeurons() const;
+
+    static constexpr double GLOBAL_BIAS = 0.1;
+    static constexpr double MIN_WEIGHT = -4;
+    static constexpr double MAX_WEIGHT = 4;
 private:
-    const double GLOBAL_BIAS = 0.1;
-    //const double LEARNING_RATE = 0.1;
-    const double RANDOM_WEIGHT_MIN = -15;
-    const double RANDOM_WEIGHT_MAX = 15;
 
-    const std::function<double(double)> ACTIVATION_FUNCTION = sigmoidFunction;
-    const std::function<double(double)> ACTIVATION_FUNCTION_DERIVATIVE = sigmoidDerivativeFunction;
+    const std::function<NEURON_VALUE(NEURON_VALUE)> ACTIVATION_FUNCTION = sigmoidFunction;
+    const std::function<NEURON_VALUE(NEURON_VALUE)> ACTIVATION_FUNCTION_DERIVATIVE = sigmoidDerivativeFunction;
 
-    std::vector<double> inputNeurons;
-    std::vector<double> outputNeurons;
-    std::vector<std::vector<double>> hiddenLayers;
+    std::vector<NEURON_VALUE> inputNeurons;
+    std::vector<NEURON_VALUE> outputNeurons;
+    std::vector<std::vector<NEURON_VALUE>> hiddenLayers;
 
-    std::vector<std::vector<double>> weightBetweenInputNeuronsAndHiddenLayer; // [inputIndex][hiddenInFirstLayerIndex]
-    std::vector<std::vector<std::vector<double>>> weightBetweenHiddenLayers; // [indexOfLeftHiddenLayer][indexOfLeftNode][indexOfRightNode]
-    std::vector<std::vector<double>> weightBetweenHiddenLayerAndOutputNeurons; // [hiddenInLastLayerIndex][outputIndex]
+    std::vector<std::vector<WEIGHT_VALUE>> weightBetweenInputNeuronsAndHiddenLayer; // [inputIndex][hiddenInFirstLayerIndex]
+    std::vector<std::vector<std::vector<WEIGHT_VALUE>>> weightBetweenHiddenLayers; // [indexOfLeftHiddenLayer][indexOfLeftNode][indexOfRightNode]
+    std::vector<std::vector<WEIGHT_VALUE>> weightBetweenHiddenLayerAndOutputNeurons; // [hiddenInLastLayerIndex][outputIndex]
 };
 
 
