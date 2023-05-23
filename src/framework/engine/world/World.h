@@ -13,11 +13,12 @@
 
 class World {
 public:
-    World();
+    World(unsigned int _numberOfRoundsPerGeneration);
 
     ~World();
 
     void mapOverItems(const std::function<void(WorldItem *)> &fun);
+    void mapOverItems(const std::function<void(WorldItem *, int)> &fun);
 
     void addItem(WorldItem *_item, sf::Vector2u pos);
 
@@ -41,6 +42,7 @@ public:
 
 private:
     WorldItem *items[WORLD_SIZE][WORLD_SIZE];
+    unsigned int numberOfRoundsPerGeneration;
 };
 
 

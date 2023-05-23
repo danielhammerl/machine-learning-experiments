@@ -4,7 +4,6 @@
 #include "Experiment.h"
 
 Experiment::Experiment() {
-
 }
 
 void Experiment::endGeneration(World *world) {

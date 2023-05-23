@@ -9,7 +9,7 @@
 #include <list>
 
 Framework::Framework(Experiment *_experiment, int argc, char **argv) : experiment(_experiment) {
-    world = new World();
+    world = new World(_experiment->numberOfRoundsPerGeneration);
 
     createDirectoryIfDoesntExist("screenshots");
 }
@@ -40,7 +40,7 @@ void Framework::run() {
 }
 
 void Framework::startGeneration() {
-    std::cout << "start generation " << currentGeneration << std::endl;
+    std::cerr << "start generation " << currentGeneration << std::endl;
     if (currentGeneration == 1) {
         world->populateRandomly(experiment->maxNumberOfBeings);
     } else {
@@ -52,14 +52,14 @@ void Framework::startGeneration() {
         world->populateByGenomes(genomesOfSurvived, experiment->maxNumberOfBeings, experiment->mutationRate);
     }
 
-    std::cout << "start generation with population " << world->getNumberOfPopulation() << std::endl;
+    std::cerr << "start generation with population " << world->getNumberOfPopulation() << std::endl;
 }
 
 void Framework::endGeneration() {
-    std::cout << "end generation " << currentGeneration << std::endl;
+    std::cerr << "end generation " << currentGeneration << std::endl;
     experiment->endGeneration(world);
     int numberOfSurvivedItems = world->getNumberOfPopulation();
-    std::cout << "end generation with population: " << numberOfSurvivedItems << std::endl;
+    std::cerr << "end generation with population: " << numberOfSurvivedItems << std::endl;
 }
 
 void Framework::round() {

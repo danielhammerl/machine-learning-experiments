@@ -15,6 +15,11 @@ enum class WorldItemSensor {
     RANDOM,
     X_POS,
     Y_POS,
+    ROUND,
+    CAN_MOVE_LEFT,
+    CAN_MOVE_RIGHT,
+    CAN_MOVE_DOWN,
+    CAN_MOVE_UP,
     NOOP_MAX_VALUE,
 };
 
@@ -23,10 +28,6 @@ enum class WorldItemAction {
     MOVE_RIGHT,
     MOVE_UP,
     MOVE_DOWN,
-    MOVE_LEFT_UP,
-    MOVE_RIGHT_UP,
-    MOVE_LEFT_DOWN,
-    MOVE_RIGHT_DOWN,
     NOOP_MAX_VALUE,
 };
 
@@ -35,8 +36,8 @@ static NEURON_COUNT_TYPE NUMBER_OF_OUTPUT_NEURONS = static_cast<NEURON_COUNT_TYP
 
 class WorldItem {
 public:
-    WorldItem();
-    WorldItem(Genome genome);
+    WorldItem(unsigned int _numberOfRoundsPerGeneration);
+    WorldItem(unsigned int _numberOfRoundsPerGeneration,Genome genome);
 
     ~WorldItem();
 
@@ -44,7 +45,7 @@ public:
 
     sf::Vector2u getPosition();
 
-    void round();
+    void round(bool canMoveLeft, bool canMoveRight, bool canMoveUp, bool canMoveDown);
 
     sf::Color getColor();
 
@@ -56,7 +57,7 @@ public:
         return this->nextAction;
     }
 
-    std::vector<double> getSensorData();
+    std::vector<double> getSensorData(bool canMoveLeft, bool canMoveRight, bool canMoveUp, bool canMoveDown);
 
     std::string getGenomeAsString();
 
@@ -66,8 +67,9 @@ protected:
 private:
     WorldItemAction nextAction = WorldItemAction::NOOP_MAX_VALUE;
     sf::Vector2u position;
-
+    unsigned int currentRound = 0;
     NeuronalNetwork *brain;
+    unsigned int numberOfRoundsPerGeneration;
 };
 
 

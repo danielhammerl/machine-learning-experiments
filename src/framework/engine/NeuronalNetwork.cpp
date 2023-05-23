@@ -75,36 +75,36 @@ void NeuronalNetwork::generateRandomWeights() {
 }
 
 void NeuronalNetwork::printWeights() {
-    std::cout << "Printing Neuron Network" << std::endl;
+    std::cerr << "Printing Neuron Network" << std::endl;
 
     for (const auto &inputNeuron: weightBetweenInputNeuronsAndHiddenLayer) {
-        std::cout << "input neuron x to next hidden neurons ";
+        std::cerr << "input neuron x to next hidden neurons ";
         for (auto connection: inputNeuron) {
-            std::cout << connection << " ";
+            std::cerr << connection << " ";
         }
-        std::cout << std::endl;
+        std::cerr << std::endl;
     }
 
     for (const auto &hiddenLayer: weightBetweenHiddenLayers) {
         for (const auto &hiddenNode: hiddenLayer) {
-            std::cout << "hidden neuron to next hidden neurons ";
+            std::cerr << "hidden neuron to next hidden neurons ";
             for (auto connection: hiddenNode) {
-                std::cout << connection << " ";
+                std::cerr << connection << " ";
             }
-            std::cout << std::endl;
+            std::cerr << std::endl;
         }
-        std::cout << std::endl;
+        std::cerr << std::endl;
     }
 
     for (const auto &outputNeuron: weightBetweenHiddenLayerAndOutputNeurons) {
-        std::cout << "hidden neuron x in last layer to output neurons ";
+        std::cerr << "hidden neuron x in last layer to output neurons ";
         for (auto connection: outputNeuron) {
-            std::cout << connection << " ";
+            std::cerr << connection << " ";
         }
-        std::cout << std::endl;
+        std::cerr << std::endl;
     }
 
-    std::cout << "Finished printing Neuron Network" << std::endl;
+    std::cerr << "Finished printing Neuron Network" << std::endl;
 }
 
 void

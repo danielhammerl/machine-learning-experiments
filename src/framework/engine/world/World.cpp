@@ -4,40 +4,47 @@
 
 #include "World.h"
 #include <iostream>
+#include <SFML/System.hpp>
 
-World::World() {
-
+World::World(unsigned int _numberOfRoundsPerGeneration) {
+    numberOfRoundsPerGeneration = _numberOfRoundsPerGeneration;
 }
 
 World::~World() {
 
 }
-
+//108 bei mutation rate 0.1
 void World::round() {
-    mapOverItems([&, this](WorldItem *item) {
-        item->round();
+    const int numberOfThreads = 12;
+    std::array<std::list<WorldItem *>, numberOfThreads> items;
+    items.fill(std::list<WorldItem *>());
+    std::array<sf::Thread *, numberOfThreads> threads;
+    mapOverItems([&, this](WorldItem *item, int index) {
+        items[index % numberOfThreads].push_back(item);
     });
+    int threadIndex = 0;
+    for (int x = 0; x < numberOfThreads; x++) {
+        threads[x] = new sf::Thread([&items, threadIndex, this]() {
+            //std::cerr << "starting thread " << threadIndex << std::endl;
+            for (auto item: items[threadIndex]) {
+                bool canMoveLeft = isItemAtPos(sf::Vector2u(item->getPosition().x - 1, item->getPosition().y));
+                bool canMoveRight = isItemAtPos(sf::Vector2u(item->getPosition().x + 1, item->getPosition().y));
+                bool canMoveUp = isItemAtPos(sf::Vector2u(item->getPosition().x, item->getPosition().y - 1));
+                bool canMoveDown = isItemAtPos(sf::Vector2u(item->getPosition().x, item->getPosition().y + 1));
+                item->round(canMoveLeft, canMoveRight, canMoveUp, canMoveDown);
+            }
+        });
+        threads[x]->launch();
+        threadIndex++;
+    }
+    for (auto it: threads) {
+        it->wait();
+    }
     mapOverItems([&, this](WorldItem *item) {
         auto action = item->getNextAction();
         switch (action) {
             case WorldItemAction::NOOP_MAX_VALUE:
                 break;
-            case WorldItemAction::MOVE_RIGHT_DOWN: {
-                moveItem(item, MOVE_DIRECTION::DOWN_RIGHT);
-                break;
-            }
-            case WorldItemAction::MOVE_RIGHT_UP: {
-                moveItem(item, MOVE_DIRECTION::UP_RIGHT);
-                break;
-            }
-            case WorldItemAction::MOVE_LEFT_DOWN: {
-                moveItem(item, MOVE_DIRECTION::DOWN_LEFT);
-                break;
-            }
-            case WorldItemAction::MOVE_LEFT_UP: {
-                moveItem(item, MOVE_DIRECTION::UP_LEFT);
-                break;
-            }
             case WorldItemAction::MOVE_LEFT: {
                 moveItem(item, MOVE_DIRECTION::LEFT);
                 break;
@@ -69,6 +76,18 @@ void World::mapOverItems(const std::function<void(WorldItem *)> &fun) {
     }
 }
 
+void World::mapOverItems(const std::function<void(WorldItem *, int)> &fun) {
+    int index = 0;
+    for (auto &x: items) {
+        for (auto &item: x) {
+            if (item != nullptr) {
+                fun(item, index);
+                index++;
+            }
+        }
+    }
+}
+
 void World::addItem(WorldItem *_item, sf::Vector2u pos) {
     auto location = items[pos.x][pos.y];
     if (location == nullptr) {
@@ -90,7 +109,7 @@ void World::populateRandomly(unsigned int population) {
             sf::Vector2u randomPos = sf::Vector2u(getRandomUnsignedInt(0, WORLD_SIZE),
                                                   getRandomUnsignedInt(0, WORLD_SIZE));
             if (!isItemAtPos(randomPos)) {
-                addItem(new WorldItem(), randomPos);
+                addItem(new WorldItem(numberOfRoundsPerGeneration), randomPos);
                 success = true;
             }
         }
@@ -114,30 +133,6 @@ void World::moveItem(WorldItem *item, MOVE_DIRECTION direction) {
     auto pos = item->getPosition();
     auto newPos = pos;
     switch (direction) {
-        case MOVE_DIRECTION::DOWN_RIGHT: {
-            if (!isItemAtPos(sf::Vector2u(pos.x + 1, pos.y + 1))) {
-                newPos = sf::Vector2u(pos.x + 1, pos.y + 1);
-            }
-            break;
-        }
-        case MOVE_DIRECTION::UP_RIGHT: {
-            if (!isItemAtPos(sf::Vector2u(pos.x + 1, pos.y - 1))) {
-                newPos = sf::Vector2u(pos.x + 1, pos.y - 1);
-            }
-            break;
-        }
-        case MOVE_DIRECTION::DOWN_LEFT: {
-            if (!isItemAtPos(sf::Vector2u(pos.x - 1, pos.y + 1))) {
-                newPos = sf::Vector2u(pos.x - 1, pos.y + 1);
-            }
-            break;
-        }
-        case MOVE_DIRECTION::UP_LEFT: {
-            if (!isItemAtPos(sf::Vector2u(pos.x - 1, pos.y - 1))) {
-                newPos = sf::Vector2u(pos.x - 1, pos.y - 1);
-            }
-            break;
-        }
         case MOVE_DIRECTION::LEFT: {
             if (!isItemAtPos(sf::Vector2u(pos.x - 1, pos.y))) {
                 newPos = sf::Vector2u(pos.x - 1, pos.y);
@@ -195,7 +190,7 @@ void World::populateByGenomes(std::vector<std::string> genomes, unsigned int pop
             sf::Vector2u randomPos = sf::Vector2u(getRandomUnsignedInt(0, WORLD_SIZE),
                                                   getRandomUnsignedInt(0, WORLD_SIZE));
             if (!isItemAtPos(randomPos)) {
-                addItem(new WorldItem(genome), randomPos);
+                addItem(new WorldItem(numberOfRoundsPerGeneration, genome), randomPos);
                 success = true;
             }
         }
