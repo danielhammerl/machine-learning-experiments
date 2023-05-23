@@ -6,6 +6,7 @@
 #include "Utils.h"
 #include <iostream>
 #include <sstream>
+#include <list>
 
 Framework::Framework(Experiment *_experiment, int argc, char **argv) : experiment(_experiment) {
     world = new World();
@@ -40,16 +41,25 @@ void Framework::run() {
 
 void Framework::startGeneration() {
     std::cout << "start generation " << currentGeneration << std::endl;
-    if(currentGeneration == 1) {
+    if (currentGeneration == 1) {
         world->populateRandomly(experiment->maxNumberOfBeings);
+    } else {
+        std::vector<std::string> genomesOfSurvived;
+        world->mapOverItems([&](WorldItem *item) {
+            genomesOfSurvived.push_back(item->getGenomeAsString());
+            world->deleteItem(item->getPosition());
+        });
+        world->populateByGenomes(genomesOfSurvived, experiment->maxNumberOfBeings, experiment->mutationRate);
     }
+
+    std::cout << "start generation with population " << world->getNumberOfPopulation() << std::endl;
 }
 
 void Framework::endGeneration() {
     std::cout << "end generation " << currentGeneration << std::endl;
     experiment->endGeneration(world);
     int numberOfSurvivedItems = world->getNumberOfPopulation();
-    std::cout << "Population: " << numberOfSurvivedItems << std::endl;
+    std::cout << "end generation with population: " << numberOfSurvivedItems << std::endl;
 }
 
 void Framework::round() {

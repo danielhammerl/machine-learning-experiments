@@ -62,7 +62,7 @@ void Genome::mutateGenome(float rate) {
 }
 
 void Genome::toNeuronalNetwork(NeuronalNetwork &brain) {
-    int chunkSize = sizeof(int32_t);
+    int chunkSize = sizeof(int32_t) * 2;
     std::deque<double> values;
     for (size_t i = 0; i < genome.length(); i += chunkSize) {
         std::string chunk;

@@ -89,11 +89,10 @@ void World::populateRandomly(unsigned int population) {
         while (!success) {
             sf::Vector2u randomPos = sf::Vector2u(getRandomUnsignedInt(0, WORLD_SIZE),
                                                   getRandomUnsignedInt(0, WORLD_SIZE));
-            if (isItemAtPos(randomPos)) {
-                break;
+            if (!isItemAtPos(randomPos)) {
+                addItem(new WorldItem(), randomPos);
+                success = true;
             }
-            addItem(new WorldItem(), randomPos);
-            success = true;
         }
     }
 }
@@ -184,4 +183,21 @@ unsigned int World::getNumberOfPopulation() {
         value++;
     });
     return value;
+}
+
+void World::populateByGenomes(std::vector<std::string> genomes, unsigned int population, float mutationRate) {
+    auto genomesLength = genomes.size();
+    for (auto x = 0; x < population; x++) {
+        auto genome = Genome(genomes[x % genomesLength]);
+        genome.mutateGenome(mutationRate);
+        bool success = false;
+        while (!success) {
+            sf::Vector2u randomPos = sf::Vector2u(getRandomUnsignedInt(0, WORLD_SIZE),
+                                                  getRandomUnsignedInt(0, WORLD_SIZE));
+            if (!isItemAtPos(randomPos)) {
+                addItem(new WorldItem(genome), randomPos);
+                success = true;
+            }
+        }
+    }
 }

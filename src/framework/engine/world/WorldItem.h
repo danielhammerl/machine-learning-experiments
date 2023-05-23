@@ -13,6 +13,8 @@
 
 enum class WorldItemSensor {
     RANDOM,
+    X_POS,
+    Y_POS,
     NOOP_MAX_VALUE,
 };
 
@@ -34,6 +36,7 @@ static NEURON_COUNT_TYPE NUMBER_OF_OUTPUT_NEURONS = static_cast<NEURON_COUNT_TYP
 class WorldItem {
 public:
     WorldItem();
+    WorldItem(Genome genome);
 
     ~WorldItem();
 

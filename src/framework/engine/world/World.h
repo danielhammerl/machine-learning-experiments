@@ -27,6 +27,8 @@ public:
 
     void populateRandomly(unsigned int population);
 
+    void populateByGenomes(std::vector<std::string> genomes, unsigned int population, float mutationRate);
+
     void depopulate();
 
     void round();

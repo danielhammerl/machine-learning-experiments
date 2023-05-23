@@ -18,6 +18,7 @@ public:
     unsigned int numberOfRoundsPerGeneration = 1000;
     unsigned int maxNumberOfGenerations = 1000;
     std::set<unsigned int> generationsToRender = {};
+    float mutationRate = 0.05;
 
 private:
 };

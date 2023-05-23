@@ -3,6 +3,7 @@
 //
 
 #include "WorldItem.h"
+#include "../constants.h"
 #include <cmath>
 
 WorldItem::WorldItem() {
@@ -11,6 +12,17 @@ WorldItem::WorldItem() {
     brain = new NeuronalNetwork(NUMBER_OF_INPUT_NEURONS, {numberOfHiddenNeuronsInFirstLayer},
                                 NUMBER_OF_OUTPUT_NEURONS);
     brain->generateRandomWeights();
+}
+
+
+
+WorldItem::WorldItem(Genome genome) {
+    auto numberOfHiddenNeuronsInFirstLayer = static_cast<NEURON_COUNT_TYPE>(std::round(
+            static_cast<long double>(NUMBER_OF_INPUT_NEURONS) / 2));
+    brain = new NeuronalNetwork(NUMBER_OF_INPUT_NEURONS, {numberOfHiddenNeuronsInFirstLayer},
+                                NUMBER_OF_OUTPUT_NEURONS);
+
+    genome.toNeuronalNetwork(*brain);
 }
 
 WorldItem::~WorldItem() {
@@ -110,7 +122,9 @@ std::vector<double> WorldItem::getSensorData() {
     std::vector<double> data;
     data.resize(static_cast<int>(WorldItemSensor::NOOP_MAX_VALUE));
 
-    data[static_cast<int>(WorldItemSensor::RANDOM)] = getRandomDouble(-5, 5);
+    data[static_cast<int>(WorldItemSensor::RANDOM)] = getRandomDouble(0, 1);
+    data[static_cast<int>(WorldItemSensor::X_POS)] = this->getPosition().x / WORLD_SIZE;
+    data[static_cast<int>(WorldItemSensor::Y_POS)] = this->getPosition().y / WORLD_SIZE;
 
     return data;
 }
