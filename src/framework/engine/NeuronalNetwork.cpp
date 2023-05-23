@@ -5,8 +5,8 @@
 #include "NeuronalNetwork.h"
 #include <iostream>
 
-NeuronalNetwork::NeuronalNetwork(unsigned _numberOfInputNeurons, std::vector<unsigned> _hiddenLayers,
-                                 unsigned _numberOfOutputNeurons) {
+NeuronalNetwork::NeuronalNetwork(NEURON_COUNT_TYPE _numberOfInputNeurons, std::vector<NEURON_COUNT_TYPE> _hiddenLayers,
+                                 NEURON_COUNT_TYPE _numberOfOutputNeurons) {
 
     if (_hiddenLayers.empty()) {
         throw std::invalid_argument("NeuronalNetwork does not support zero hidden layers!");
@@ -55,21 +55,21 @@ NeuronalNetwork::NeuronalNetwork(unsigned _numberOfInputNeurons, std::vector<uns
 void NeuronalNetwork::generateRandomWeights() {
     for (auto &inputNeuron: weightBetweenInputNeuronsAndHiddenLayer) {
         for (auto &connection: inputNeuron) {
-            connection = getRandomDouble(MIN_WEIGHT, MAX_WEIGHT);
+            connection = getRandomDouble(MIN_NEURON_WEIGHT, MAX_NEURON_WEIGHT);
         }
     }
 
     for (auto &hiddenLayer: weightBetweenHiddenLayers) {
         for (auto &hiddenNode: hiddenLayer) {
             for (auto &connection: hiddenNode) {
-                connection = getRandomDouble(MIN_WEIGHT, MAX_WEIGHT);
+                connection = getRandomDouble(MIN_NEURON_WEIGHT, MAX_NEURON_WEIGHT);
             }
         }
     }
 
     for (auto &outputNeuron: weightBetweenHiddenLayerAndOutputNeurons) {
         for (auto &connection: outputNeuron) {
-            connection = getRandomDouble(MIN_WEIGHT, MAX_WEIGHT);
+            connection = getRandomDouble(MIN_NEURON_WEIGHT, MAX_NEURON_WEIGHT);
         }
     }
 }
@@ -107,22 +107,25 @@ void NeuronalNetwork::printWeights() {
     std::cout << "Finished printing Neuron Network" << std::endl;
 }
 
-void NeuronalNetwork::setWeightInputToHidden(unsigned int indexOfInputNeuron, unsigned int indexOfHiddenNeuron,
-                                             WEIGHT_VALUE weight) {
+void
+NeuronalNetwork::setWeightInputToHidden(NEURON_COUNT_TYPE indexOfInputNeuron, NEURON_COUNT_TYPE indexOfHiddenNeuron,
+                                        WEIGHT_VALUE_TYPE weight) {
     weightBetweenInputNeuronsAndHiddenLayer[indexOfInputNeuron][indexOfHiddenNeuron] = weight;
 }
 
-void NeuronalNetwork::setWeightHiddenToHidden(unsigned int indexOfLeftHiddenLayer, unsigned int indexOfLeftNeuron,
-                                              unsigned int indexOfRightNeuron, WEIGHT_VALUE weight) {
+void
+NeuronalNetwork::setWeightHiddenToHidden(NEURON_COUNT_TYPE indexOfLeftHiddenLayer, NEURON_COUNT_TYPE indexOfLeftNeuron,
+                                         NEURON_COUNT_TYPE indexOfRightNeuron, WEIGHT_VALUE_TYPE weight) {
     weightBetweenHiddenLayers[indexOfLeftHiddenLayer][indexOfLeftNeuron][indexOfRightNeuron] = weight;
 }
 
-void NeuronalNetwork::setWeightHiddenToOutput(unsigned int indexOfHiddenNeuron, unsigned int indexOfOutputNeuron,
-                                              WEIGHT_VALUE weight) {
+void
+NeuronalNetwork::setWeightHiddenToOutput(NEURON_COUNT_TYPE indexOfHiddenNeuron, NEURON_COUNT_TYPE indexOfOutputNeuron,
+                                         WEIGHT_VALUE_TYPE weight) {
     weightBetweenHiddenLayerAndOutputNeurons[indexOfHiddenNeuron][indexOfOutputNeuron] = weight;
 }
 
-std::vector<double> NeuronalNetwork::feedForward(std::vector<NEURON_VALUE> input) {
+std::vector<double> NeuronalNetwork::feedForward(std::vector<NEURON_VALUE_TYPE> input) {
     if (input.size() != inputNeurons.size()) {
         throw std::invalid_argument(
                 "NeuronalNetwork::feedForward -> number of inputs should have length of number of input neurons");
@@ -172,17 +175,17 @@ std::vector<double> NeuronalNetwork::feedForward(std::vector<NEURON_VALUE> input
     return outputNeurons;
 }
 
-unsigned NeuronalNetwork::getNumberOfInputNeurons() const {
+unsigned char NeuronalNetwork::getNumberOfInputNeurons() const {
     return inputNeurons.size();
 }
 
-unsigned NeuronalNetwork::getNumberOfOutputNeurons() const {
+unsigned char NeuronalNetwork::getNumberOfOutputNeurons() const {
     return outputNeurons.size();
 }
 
 
-std::vector<unsigned> NeuronalNetwork::getNumberOfHiddenNeurons() const {
-    std::vector<unsigned> temp;
+std::vector<unsigned char> NeuronalNetwork::getNumberOfHiddenNeurons() const {
+    std::vector<unsigned char> temp;
     temp.reserve(hiddenLayers.size());
     for (const auto &it: hiddenLayers) {
         temp.push_back(it.size());
@@ -190,14 +193,14 @@ std::vector<unsigned> NeuronalNetwork::getNumberOfHiddenNeurons() const {
     return temp;
 }
 
-std::vector<std::vector<double>> NeuronalNetwork::getWeightBetweenInputNeuronsAndHiddenLayer() const {
+std::vector<std::vector<double>> NeuronalNetwork::getWeightsBetweenInputNeuronsAndHiddenLayer() const {
     return weightBetweenInputNeuronsAndHiddenLayer;
 }
 
-std::vector<std::vector<std::vector<double>>> NeuronalNetwork::getWeightBetweenHiddenLayers() const {
+std::vector<std::vector<std::vector<double>>> NeuronalNetwork::getWeightsBetweenHiddenLayers() const {
     return weightBetweenHiddenLayers;
 }
 
-std::vector<std::vector<double>> NeuronalNetwork::getWeightBetweenHiddenLayerAndOutputNeurons() const {
+std::vector<std::vector<double>> NeuronalNetwork::getWeightsBetweenHiddenLayerAndOutputNeurons() const {
     return weightBetweenHiddenLayerAndOutputNeurons;
 }

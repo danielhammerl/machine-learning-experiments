@@ -6,13 +6,23 @@
 #define MACHINELEARNINGEXPERIMENTS_GENOME_H
 
 #include <string>
+#include "../NeuronalNetwork.h"
 
 class Genome {
 public:
-    Genome();
+    Genome() = delete;
+    explicit Genome(const NeuronalNetwork &brain);
     explicit Genome(const std::string &from);
 
+    std::string toString() const {
+        return genome;
+    }
+
+    void mutateGenome(float rate);
+
 private:
+    std::string genome = "GENOME";
+
 
 };
 

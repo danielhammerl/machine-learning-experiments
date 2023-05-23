@@ -20,42 +20,42 @@ void World::round() {
     mapOverItems([&, this](WorldItem *item) {
         auto action = item->getNextAction();
         switch (action) {
-            case WorldItem::WorldItemAction::NOOP_MAX_VALUE:
+            case WorldItemAction::NOOP_MAX_VALUE:
                 break;
-            case WorldItem::WorldItemAction::MOVE_RIGHT_DOWN: {
+            case WorldItemAction::MOVE_RIGHT_DOWN: {
                 moveItem(item, MOVE_DIRECTION::DOWN_RIGHT);
                 break;
             }
-            case WorldItem::WorldItemAction::MOVE_RIGHT_UP: {
+            case WorldItemAction::MOVE_RIGHT_UP: {
                 moveItem(item, MOVE_DIRECTION::UP_RIGHT);
                 break;
             }
-            case WorldItem::WorldItemAction::MOVE_LEFT_DOWN: {
+            case WorldItemAction::MOVE_LEFT_DOWN: {
                 moveItem(item, MOVE_DIRECTION::DOWN_LEFT);
                 break;
             }
-            case WorldItem::WorldItemAction::MOVE_LEFT_UP: {
+            case WorldItemAction::MOVE_LEFT_UP: {
                 moveItem(item, MOVE_DIRECTION::UP_LEFT);
                 break;
             }
-            case WorldItem::WorldItemAction::MOVE_LEFT: {
+            case WorldItemAction::MOVE_LEFT: {
                 moveItem(item, MOVE_DIRECTION::LEFT);
                 break;
             }
-            case WorldItem::WorldItemAction::MOVE_RIGHT: {
+            case WorldItemAction::MOVE_RIGHT: {
                 moveItem(item, MOVE_DIRECTION::RIGHT);
                 break;
             }
-            case WorldItem::WorldItemAction::MOVE_UP: {
+            case WorldItemAction::MOVE_UP: {
                 moveItem(item, MOVE_DIRECTION::UP);
                 break;
             }
-            case WorldItem::WorldItemAction::MOVE_DOWN: {
+            case WorldItemAction::MOVE_DOWN: {
                 moveItem(item, MOVE_DIRECTION::DOWN);
                 break;
             }
         }
-        item->setNextAction(WorldItem::WorldItemAction::NOOP_MAX_VALUE);
+        item->setNextAction(WorldItemAction::NOOP_MAX_VALUE);
     });
 }
 

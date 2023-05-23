@@ -11,55 +11,52 @@
 
 class NeuronalNetwork {
 public:
-    using NEURON_VALUE = double;
-    using WEIGHT_VALUE = double;
-
-    NeuronalNetwork(unsigned _numberOfInputNeurons, std::vector<unsigned> _hiddenLayers,
-                    unsigned _numberOfOutputNeurons);
+    NeuronalNetwork(NEURON_COUNT_TYPE _numberOfInputNeurons, std::vector<NEURON_COUNT_TYPE> _hiddenLayers,
+                    NEURON_COUNT_TYPE _numberOfOutputNeurons);
 
     void generateRandomWeights();
 
     void printWeights();
 
-    void setWeightInputToHidden(unsigned indexOfInputNeuron, unsigned indexOfHiddenNeuron,
-                                WEIGHT_VALUE weight);
+    void setWeightInputToHidden(NEURON_COUNT_TYPE indexOfInputNeuron, NEURON_COUNT_TYPE indexOfHiddenNeuron,
+                                WEIGHT_VALUE_TYPE weight);
 
     void
-    setWeightHiddenToHidden(unsigned indexOfLeftHiddenLayer, unsigned indexOfLeftNeuron, unsigned indexOfRightNeuron,
-                            WEIGHT_VALUE weight);
+    setWeightHiddenToHidden(NEURON_COUNT_TYPE indexOfLeftHiddenLayer, NEURON_COUNT_TYPE indexOfLeftNeuron,
+                            NEURON_COUNT_TYPE indexOfRightNeuron,
+                            WEIGHT_VALUE_TYPE weight);
 
-    void setWeightHiddenToOutput(unsigned indexOfHiddenNeuron, unsigned indexOfOutputNeuron,
-                                 WEIGHT_VALUE weight);
+    void setWeightHiddenToOutput(NEURON_COUNT_TYPE indexOfHiddenNeuron, NEURON_COUNT_TYPE indexOfOutputNeuron,
+                                 WEIGHT_VALUE_TYPE weight);
 
-    std::vector<NEURON_VALUE> feedForward(std::vector<NEURON_VALUE> input);
+    std::vector<NEURON_VALUE_TYPE> feedForward(std::vector<NEURON_VALUE_TYPE> input);
 
-    [[nodiscard]] unsigned getNumberOfInputNeurons() const;
+    [[nodiscard]] NEURON_COUNT_TYPE getNumberOfInputNeurons() const;
 
-    [[nodiscard]] unsigned getNumberOfOutputNeurons() const;
+    [[nodiscard]] NEURON_COUNT_TYPE getNumberOfOutputNeurons() const;
 
-    [[nodiscard]] std::vector<unsigned> getNumberOfHiddenNeurons() const;
+    [[nodiscard]] std::vector<NEURON_COUNT_TYPE> getNumberOfHiddenNeurons() const;
 
-    [[nodiscard]] std::vector<std::vector<WEIGHT_VALUE>> getWeightBetweenInputNeuronsAndHiddenLayer() const;
+    [[nodiscard]] std::vector<std::vector<WEIGHT_VALUE_TYPE>> getWeightsBetweenInputNeuronsAndHiddenLayer() const;
 
-    [[nodiscard]] std::vector<std::vector<std::vector<WEIGHT_VALUE>>> getWeightBetweenHiddenLayers() const;
+    [[nodiscard]] std::vector<std::vector<std::vector<WEIGHT_VALUE_TYPE>>> getWeightsBetweenHiddenLayers() const;
 
-    [[nodiscard]] std::vector<std::vector<WEIGHT_VALUE>> getWeightBetweenHiddenLayerAndOutputNeurons() const;
+    [[nodiscard]] std::vector<std::vector<WEIGHT_VALUE_TYPE>> getWeightsBetweenHiddenLayerAndOutputNeurons() const;
 
     static constexpr double GLOBAL_BIAS = 0.1;
-    static constexpr double MIN_WEIGHT = -15;
-    static constexpr double MAX_WEIGHT = 15;
 private:
 
-    const std::function<NEURON_VALUE(NEURON_VALUE)> ACTIVATION_FUNCTION = sigmoidFunction;
-    const std::function<NEURON_VALUE(NEURON_VALUE)> ACTIVATION_FUNCTION_DERIVATIVE = sigmoidDerivativeFunction;
+    const std::function<NEURON_VALUE_TYPE(NEURON_VALUE_TYPE)> ACTIVATION_FUNCTION = sigmoidFunction;
+    const std::function<NEURON_VALUE_TYPE(
+            NEURON_VALUE_TYPE)> ACTIVATION_FUNCTION_DERIVATIVE = sigmoidDerivativeFunction;
 
-    std::vector<NEURON_VALUE> inputNeurons;
-    std::vector<NEURON_VALUE> outputNeurons;
-    std::vector<std::vector<NEURON_VALUE>> hiddenLayers;
+    std::vector<NEURON_VALUE_TYPE> inputNeurons;
+    std::vector<NEURON_VALUE_TYPE> outputNeurons;
+    std::vector<std::vector<NEURON_VALUE_TYPE>> hiddenLayers;
 
-    std::vector<std::vector<WEIGHT_VALUE>> weightBetweenInputNeuronsAndHiddenLayer; // [inputIndex][hiddenInFirstLayerIndex]
-    std::vector<std::vector<std::vector<WEIGHT_VALUE>>> weightBetweenHiddenLayers; // [indexOfLeftHiddenLayer][indexOfLeftNode][indexOfRightNode]
-    std::vector<std::vector<WEIGHT_VALUE>> weightBetweenHiddenLayerAndOutputNeurons; // [hiddenInLastLayerIndex][outputIndex]
+    std::vector<std::vector<WEIGHT_VALUE_TYPE>> weightBetweenInputNeuronsAndHiddenLayer; // [inputIndex][hiddenInFirstLayerIndex]
+    std::vector<std::vector<std::vector<WEIGHT_VALUE_TYPE>>> weightBetweenHiddenLayers; // [indexOfLeftHiddenLayer][indexOfLeftNode][indexOfRightNode]
+    std::vector<std::vector<WEIGHT_VALUE_TYPE>> weightBetweenHiddenLayerAndOutputNeurons; // [hiddenInLastLayerIndex][outputIndex]
 };
 
 

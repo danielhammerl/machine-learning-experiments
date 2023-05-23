@@ -3,10 +3,13 @@
 //
 
 #include "WorldItem.h"
+#include <cmath>
 
 WorldItem::WorldItem() {
-    brain = new NeuronalNetwork(static_cast<int>(WorldItemSensor::NOOP_MAX_VALUE), {1},
-                                static_cast<int>(WorldItemAction::NOOP_MAX_VALUE));
+    auto numberOfHiddenNeuronsInFirstLayer = static_cast<NEURON_COUNT_TYPE>(std::round(
+            static_cast<long double>(NUMBER_OF_INPUT_NEURONS) / 2));
+    brain = new NeuronalNetwork(NUMBER_OF_INPUT_NEURONS, {numberOfHiddenNeuronsInFirstLayer},
+                                NUMBER_OF_OUTPUT_NEURONS);
     brain->generateRandomWeights();
 }
 
@@ -110,4 +113,11 @@ std::vector<double> WorldItem::getSensorData() {
     data[static_cast<int>(WorldItemSensor::RANDOM)] = getRandomDouble(-5, 5);
 
     return data;
+}
+
+std::string WorldItem::getGenomeAsString() {
+    auto *genome = new Genome(*brain);
+    std::string result = genome->toString();
+    delete genome;
+    return result;
 }
