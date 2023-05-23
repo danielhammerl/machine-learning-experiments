@@ -33,6 +33,10 @@ public:
 
     void moveItem(WorldItem *item, MOVE_DIRECTION direction);
 
+    void deleteItem(sf::Vector2u pos);
+
+    unsigned int getNumberOfPopulation();
+
 private:
     WorldItem *items[WORLD_SIZE][WORLD_SIZE];
 };

@@ -69,6 +69,16 @@ static int32_t convertWeightToInt32(WEIGHT_VALUE_TYPE value) {
     return static_cast<int32_t>(static_cast<double>(std::numeric_limits<int32_t>::min()) * std::abs(normalizedValue));
 }
 
+static WEIGHT_VALUE_TYPE convertInt32ToWeight(int32_t value) {
+    if (value >= 0) {
+        return (static_cast<double>(value) / static_cast<double>(std::numeric_limits<int32_t>::max())) *
+               MAX_NEURON_WEIGHT;
+    }
+
+    return (static_cast<double>(value) / static_cast<double>(std::numeric_limits<int32_t>::min())) *
+           MIN_NEURON_WEIGHT;
+}
+
 enum MOVE_DIRECTION {
     UP,
     DOWN,
@@ -104,7 +114,7 @@ static std::vector<bool> hexStringToVector(const std::string &hexString) {
     return result;
 }
 
-static std::string vectorToHexString(const std::vector<bool>& bitVector) {
+static std::string vectorToHexString(const std::vector<bool> &bitVector) {
     std::string result;
     size_t numBits = bitVector.size();
 

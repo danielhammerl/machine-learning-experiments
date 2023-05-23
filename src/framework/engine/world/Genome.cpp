@@ -6,9 +6,9 @@
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
+#include <deque>
 
 Genome::Genome(const NeuronalNetwork &brain) {
-
     if (brain.getNumberOfHiddenNeurons().size() != 1) {
         throw std::logic_error("Genome only can handle one hidden layer");
     }
@@ -59,4 +59,36 @@ void Genome::mutateGenome(float rate) {
     }
 
     genome = vectorToHexString(genomeAsBoolVector);
+}
+
+void Genome::toNeuronalNetwork(NeuronalNetwork &brain) {
+    int chunkSize = sizeof(int32_t);
+    std::deque<double> values;
+    for (size_t i = 0; i < genome.length(); i += chunkSize) {
+        std::string chunk;
+        chunk = genome.substr(i, chunkSize);
+        int32_t value = static_cast<int32_t>(std::stoul(chunk, nullptr, 16));
+        values.push_back(value);
+    }
+
+    auto weightsBetweenInputNeuronsAndHiddenLayer = brain.getWeightsBetweenInputNeuronsAndHiddenLayer();
+    auto weightsBetweenHiddenLayerAndOutputNeurons = brain.getWeightsBetweenHiddenLayerAndOutputNeurons();
+
+    for (int inputNeuronIndex = 0; inputNeuronIndex < weightsBetweenInputNeuronsAndHiddenLayer.size(); inputNeuronIndex++) {
+       for(int hiddenNeuronIndex = 0; hiddenNeuronIndex < weightsBetweenInputNeuronsAndHiddenLayer[inputNeuronIndex].size(); hiddenNeuronIndex++) {
+           brain.setWeightInputToHidden(inputNeuronIndex, hiddenNeuronIndex, convertInt32ToWeight(values[0]));
+           values.pop_front();
+       }
+    }
+
+    for(int hiddenNeuronIndex = 0; hiddenNeuronIndex < weightsBetweenHiddenLayerAndOutputNeurons.size(); hiddenNeuronIndex++) {
+        for(int outputNeuronIndex = 0; outputNeuronIndex < weightsBetweenHiddenLayerAndOutputNeurons[hiddenNeuronIndex].size(); outputNeuronIndex++) {
+            brain.setWeightHiddenToOutput(hiddenNeuronIndex, outputNeuronIndex, convertInt32ToWeight(values[0]));
+            values.pop_front();
+        }
+    }
+
+    if(values.size() != 0) {
+        throw std::logic_error("there are unused parts of genome");
+    }
 }

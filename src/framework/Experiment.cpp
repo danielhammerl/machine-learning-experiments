@@ -7,6 +7,6 @@ Experiment::Experiment() {
 
 }
 
-void Experiment::endGeneration() {
+void Experiment::endGeneration(World *world) {
 
 }

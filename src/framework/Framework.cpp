@@ -40,13 +40,16 @@ void Framework::run() {
 
 void Framework::startGeneration() {
     std::cout << "start generation " << currentGeneration << std::endl;
-    world->populateRandomly(experiment->maxNumberOfBeings);
+    if(currentGeneration == 1) {
+        world->populateRandomly(experiment->maxNumberOfBeings);
+    }
 }
 
 void Framework::endGeneration() {
     std::cout << "end generation " << currentGeneration << std::endl;
-    experiment->endGeneration();
-    world->depopulate();
+    experiment->endGeneration(world);
+    int numberOfSurvivedItems = world->getNumberOfPopulation();
+    std::cout << "Population: " << numberOfSurvivedItems << std::endl;
 }
 
 void Framework::round() {

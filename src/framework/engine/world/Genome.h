@@ -19,9 +19,10 @@ public:
     }
 
     void mutateGenome(float rate);
+    void toNeuronalNetwork(NeuronalNetwork &brain);
 
 private:
-    std::string genome = "GENOME";
+    std::string genome = "";
 
 
 };

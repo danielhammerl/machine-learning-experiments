@@ -12,6 +12,7 @@ class Test : public Experiment {
 public:
 
 Test();
+void endGeneration(World *world) override;
 
 };
 

@@ -107,8 +107,7 @@ bool World::isItemAtPos(sf::Vector2u pos) {
 
 void World::depopulate() {
     mapOverItems([&, this](WorldItem *item) {
-        this->items[item->getPosition().x][item->getPosition().y] = nullptr;
-        delete item;
+        deleteItem(item->getPosition());
     });
 }
 
@@ -171,4 +170,18 @@ void World::moveItem(WorldItem *item, MOVE_DIRECTION direction) {
         items[newPos.x][newPos.y] = items[pos.x][pos.y];
         items[pos.x][pos.y] = nullptr;
     }
+}
+
+void World::deleteItem(sf::Vector2u pos) {
+    auto item = this->items[pos.x][pos.y];
+    delete item;
+    this->items[pos.x][pos.y] = nullptr;
+}
+
+unsigned int World::getNumberOfPopulation() {
+    unsigned int value = 0;
+    mapOverItems([&, this](WorldItem *item) {
+        value++;
+    });
+    return value;
 }
