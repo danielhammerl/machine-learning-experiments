@@ -190,7 +190,7 @@ unsigned int World::getNumberOfPopulation() {
 void World::populateByGenomes(std::vector<std::string> genomes, unsigned int population, float mutationRate) {
     int genomesLength = std::min((int) genomes.size() * 2, (int) population);
     for (auto x = 0; x < genomesLength; x++) {
-        auto genome = Genome(genomes[x % genomesLength]);
+        auto genome = Genome(genomes[x % genomes.size()]);
         genome.mutateGenome(mutationRate);
         bool success = false;
         while (!success) {
