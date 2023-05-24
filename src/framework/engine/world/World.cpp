@@ -27,10 +27,10 @@ void World::round() {
         threads[x] = new sf::Thread([&items, threadIndex, this]() {
             //std::cerr << "starting thread " << threadIndex << std::endl;
             for (auto item: items[threadIndex]) {
-                bool canMoveLeft = isItemAtPos(sf::Vector2u(item->getPosition().x - 1, item->getPosition().y));
-                bool canMoveRight = isItemAtPos(sf::Vector2u(item->getPosition().x + 1, item->getPosition().y));
-                bool canMoveUp = isItemAtPos(sf::Vector2u(item->getPosition().x, item->getPosition().y - 1));
-                bool canMoveDown = isItemAtPos(sf::Vector2u(item->getPosition().x, item->getPosition().y + 1));
+                bool canMoveLeft = isItemAtPos(sf::Vector2u(item->getPosition().x - 1, item->getPosition().y)) && item->getPosition().x > 0;
+                bool canMoveRight = isItemAtPos(sf::Vector2u(item->getPosition().x + 1, item->getPosition().y)) && item->getPosition().x < WORLD_SIZE-1;
+                bool canMoveUp = isItemAtPos(sf::Vector2u(item->getPosition().x, item->getPosition().y - 1)) && item->getPosition().y > 0;
+                bool canMoveDown = isItemAtPos(sf::Vector2u(item->getPosition().x, item->getPosition().y + 1)) && item->getPosition().y < WORLD_SIZE - 1;
                 item->round(canMoveLeft, canMoveRight, canMoveUp, canMoveDown);
             }
         });
@@ -182,8 +182,8 @@ unsigned int World::getNumberOfPopulation() {
 
 void World::populateByGenomes(std::vector<std::string> genomes, unsigned int population, float mutationRate) {
     auto genomesLength = genomes.size();
-    for (auto x = 0; x < population; x++) {
-        auto genome = Genome(genomes[x % genomesLength]);
+    for (auto x = 0; x < genomesLength; x++) {
+        auto genome = Genome(genomes[x]);
         genome.mutateGenome(mutationRate);
         bool success = false;
         while (!success) {
@@ -195,4 +195,6 @@ void World::populateByGenomes(std::vector<std::string> genomes, unsigned int pop
             }
         }
     }
+    auto rest = population - genomesLength;
+    populateRandomly(rest);
 }

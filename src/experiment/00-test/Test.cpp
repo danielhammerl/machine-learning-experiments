@@ -7,18 +7,18 @@
 
 Test::Test() {
     this->maxNumberOfBeings = 1000;
-    this->numberOfRoundsPerGeneration = 400;
-    this->maxNumberOfGenerations = 1200;
-    this->mutationRate = 0.01;
-    this->generationsToRender = { 1200};
+    this->numberOfRoundsPerGeneration = 250;
+    this->maxNumberOfGenerations = 2000;
+    this->mutationRate = 0.025;
+    this->generationsToRender = { 2000};
 }
 
 void Test::endGeneration(World *world) {
     Experiment::endGeneration(world);
 
     world->mapOverItems([&, this](WorldItem *item) {
-        if (item->getPosition().x < WORLD_SIZE - WORLD_SIZE / 4 ||
-            item->getPosition().y < WORLD_SIZE - WORLD_SIZE / 4) {
+        if (item->getPosition().x < WORLD_SIZE - WORLD_SIZE / 7 ||
+            item->getPosition().y < WORLD_SIZE - WORLD_SIZE / 7) {
             world->deleteItem(item->getPosition());
         }
     });
