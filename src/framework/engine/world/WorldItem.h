@@ -16,6 +16,7 @@ enum class WorldItemSensor {
     X_POS,
     Y_POS,
     ROUND,
+    OSCILATOR,
     CAN_MOVE_LEFT,
     CAN_MOVE_RIGHT,
     CAN_MOVE_DOWN,

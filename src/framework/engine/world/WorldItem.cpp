@@ -9,7 +9,7 @@
 WorldItem::WorldItem(unsigned int _numberOfRoundsPerGeneration) {
     auto numberOfHiddenNeuronsInFirstLayer = static_cast<NEURON_COUNT_TYPE>(std::round(
             static_cast<long double>(NUMBER_OF_INPUT_NEURONS) / 2));
-    brain = new NeuronalNetwork(NUMBER_OF_INPUT_NEURONS, {numberOfHiddenNeuronsInFirstLayer},
+    brain = new NeuronalNetwork(NUMBER_OF_INPUT_NEURONS, {NUMBER_OF_INPUT_NEURONS},
                                 NUMBER_OF_OUTPUT_NEURONS);
     brain->generateRandomWeights();
     numberOfRoundsPerGeneration = _numberOfRoundsPerGeneration;
@@ -19,7 +19,7 @@ WorldItem::WorldItem(unsigned int _numberOfRoundsPerGeneration) {
 WorldItem::WorldItem(unsigned int _numberOfRoundsPerGeneration, Genome genome) {
     auto numberOfHiddenNeuronsInFirstLayer = static_cast<NEURON_COUNT_TYPE>(std::round(
             static_cast<long double>(NUMBER_OF_INPUT_NEURONS) / 2));
-    brain = new NeuronalNetwork(NUMBER_OF_INPUT_NEURONS, {numberOfHiddenNeuronsInFirstLayer},
+    brain = new NeuronalNetwork(NUMBER_OF_INPUT_NEURONS, {NUMBER_OF_INPUT_NEURONS},
                                 NUMBER_OF_OUTPUT_NEURONS);
 
     genome.toNeuronalNetwork(*brain);
@@ -105,11 +105,12 @@ std::vector<double> WorldItem::getSensorData(bool canMoveLeft, bool canMoveRight
     data[static_cast<int>(WorldItemSensor::CAN_MOVE_UP)] = canMoveUp ? 4 : -4;
     data[static_cast<int>(WorldItemSensor::CAN_MOVE_LEFT)] = canMoveLeft ? 4 : -4;
     data[static_cast<int>(WorldItemSensor::CAN_MOVE_RIGHT)] = canMoveRight ? 4 : -4;
+    data[static_cast<int>(WorldItemSensor::OSCILATOR)] = ((float) (currentRound % 20) / 20) * 8 - 4;
     data[static_cast<int>(WorldItemSensor::RANDOM)] = getRandomDouble(-4, 4);
-    data[static_cast<int>(WorldItemSensor::X_POS)] = (this->getPosition().x / WORLD_SIZE) * 8 - 4;
-    data[static_cast<int>(WorldItemSensor::Y_POS)] = (this->getPosition().y / WORLD_SIZE) * 8 - 4;
+    data[static_cast<int>(WorldItemSensor::X_POS)] = ((float) this->getPosition().x / (float) WORLD_SIZE) * 8 - 4;
+    data[static_cast<int>(WorldItemSensor::Y_POS)] = ((float) this->getPosition().y / (float) WORLD_SIZE) * 8 - 4;
     data[static_cast<int>(WorldItemSensor::ROUND)] =
-            (static_cast<double>(currentRound) / static_cast<double>(numberOfRoundsPerGeneration)) * 8 - 4;
+            ((double) (currentRound) / (double) (numberOfRoundsPerGeneration)) * 8 - 4;
 
     return data;
 }

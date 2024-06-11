@@ -17,6 +17,7 @@ public:
     unsigned int maxNumberOfBeings = 4000;
     unsigned int numberOfRoundsPerGeneration = 1000;
     unsigned int maxNumberOfGenerations = 1000;
+    unsigned int reproducionRate = 2;
     std::set<unsigned int> generationsToRender = {};
     float mutationRate = 0.05;
 

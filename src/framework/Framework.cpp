@@ -9,7 +9,7 @@
 #include <list>
 
 Framework::Framework(Experiment *_experiment, int argc, char **argv) : experiment(_experiment) {
-    world = new World(_experiment->numberOfRoundsPerGeneration);
+    world = new World(_experiment->numberOfRoundsPerGeneration, _experiment->reproducionRate);
 
     createDirectoryIfDoesntExist("screenshots");
 }

@@ -13,7 +13,7 @@
 
 class World {
 public:
-    World(unsigned int _numberOfRoundsPerGeneration);
+    World(unsigned int _numberOfRoundsPerGeneration, unsigned int _reproductionRate);
 
     ~World();
 
@@ -43,6 +43,7 @@ public:
 private:
     WorldItem *items[WORLD_SIZE][WORLD_SIZE];
     unsigned int numberOfRoundsPerGeneration;
+    unsigned int reproductionRate;
 };
 
 

@@ -8,9 +8,10 @@
 Test::Test() {
     this->maxNumberOfBeings = 1000;
     this->numberOfRoundsPerGeneration = 250;
-    this->maxNumberOfGenerations = 2000;
-    this->mutationRate = 0.025;
-    this->generationsToRender = { 2000};
+    this->maxNumberOfGenerations = 4000;
+    this->mutationRate = 0.005;
+    this->generationsToRender = {4000};
+    this->reproducionRate = 5;
 }
 
 void Test::endGeneration(World *world) {

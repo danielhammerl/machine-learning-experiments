@@ -8,8 +8,9 @@
 #include <algorithm>
 #include <cmath>
 
-World::World(unsigned int _numberOfRoundsPerGeneration) {
+World::World(unsigned int _numberOfRoundsPerGeneration, unsigned int _reproductionRate) {
     numberOfRoundsPerGeneration = _numberOfRoundsPerGeneration;
+    reproductionRate = _reproductionRate;
 }
 
 World::~World() {
@@ -188,7 +189,7 @@ unsigned int World::getNumberOfPopulation() {
 }
 
 void World::populateByGenomes(std::vector<std::string> genomes, unsigned int population, float mutationRate) {
-    int genomesLength = std::min((int) genomes.size() * 2, (int) population);
+    int genomesLength = std::min((int) genomes.size() * (int)reproductionRate, (int) population);
     for (auto x = 0; x < genomesLength; x++) {
         auto genome = Genome(genomes[x % genomes.size()]);
         genome.mutateGenome(mutationRate);
